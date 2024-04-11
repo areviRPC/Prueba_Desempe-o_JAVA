@@ -41,11 +41,18 @@ use Contratacion_Riwi;
     INSERT INTO empresa (nombre,sector,contacto) VALUES ("epm","energia","123");
         INSERT INTO empresa (nombre,sector,contacto) VALUES ("sura","salud","123");
             INSERT INTO empresa (nombre,sector,contacto) VALUES ("argos","construccion","123");
+            
+            
     
 
 alter table vacante add tecnologia varchar(50) not null;
 
 alter table coder add clan varchar(50) not null;
+    
+    select * from coder;
+      select * from empresa;
+        select * from vacante;
+          select * from contratacion;
     
     
     
