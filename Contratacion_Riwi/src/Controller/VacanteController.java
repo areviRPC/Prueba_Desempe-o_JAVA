@@ -1,8 +1,10 @@
 package Controller;
 
+import Model.CoderModel;
 import Model.EmpresaModel;
 import Model.VacanteModel;
 import database.DBcontrato;
+import entity.Coder;
 import entity.Empresa;
 import entity.Vacante;
 
@@ -55,6 +57,10 @@ public class VacanteController {
         // invocamos el to String de la empresa
         EmpresaController objEmpresa = new EmpresaController();
         String listaEmpresas = objEmpresa.getAllString();
+
+        // invocamos al coder
+
+
 
         // definimos los inputs para llenar datos
 

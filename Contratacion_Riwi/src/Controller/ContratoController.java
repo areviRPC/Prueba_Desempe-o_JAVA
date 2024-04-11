@@ -1,8 +1,12 @@
 package Controller;
 
+import Model.CoderModel;
 import Model.ContratoModel;
+import Model.EmpresaModel;
 import Model.VacanteModel;
+import entity.Coder;
 import entity.Contratacion;
+import entity.Empresa;
 import entity.Vacante;
 
 import javax.swing.*;
@@ -38,20 +42,48 @@ public class ContratoController {
     public static void create(){
         ContratoModel objContratoModel = new ContratoModel();
 
-        // invocamos el to String del coder
+        // invocamos el coder completo
         CoderController objCoder = new CoderController();
         String listaCoder = objCoder.getAllString();
+        CoderModel objCoderModel = new CoderModel();
 
-        // invocamos el to String de las vacantes
+        Coder objCoderCompara = null;
+
+        // invocamos las vacantes
         VacanteController objVacante = new VacanteController();
         String listaVacantes = objVacante.getAllString();
+        VacanteModel objVacanteModel = new VacanteModel();
 
+        Vacante objVacanteCompara = null;
+
+        // invocamos las empresas
+        EmpresaModel objEmpresaModel = new EmpresaModel();
+        Empresa objEmpresaShow = null;
+
+
+        int opcion  = 0;
+        int coder = 0;
+        int vacante = 0;
         // definimos los inputs para llenar datos
 
-        String estado = JOptionPane.showInputDialog(null,"ingrese el estado de la vacante (solo se acepta 'activo' e 'inactivo' ");
+        String estado = "ACTIVO";
         double salario = Double.parseDouble(JOptionPane.showInputDialog(null,"ingrese el salario"));
-        int coder = Integer.parseInt(JOptionPane.showInputDialog(null,listaCoder + "ingrese el id del coder a ingresar"));
-        int vacante = Integer.parseInt(JOptionPane.showInputDialog(null,listaVacantes + "ingrese el id del coder a ingresar"));
+
+        while (opcion != 1){
+            coder = Integer.parseInt(JOptionPane.showInputDialog(null,listaCoder + "ingrese el id del coder a ingresar"));
+            vacante = Integer.parseInt(JOptionPane.showInputDialog(null,listaVacantes + "ingrese el id del coder a ingresar"));
+            objVacanteCompara = (Vacante) objVacanteModel.buscar_por_id(vacante);
+            objCoderCompara = (Coder) objCoderModel.buscar_por_id(coder);
+            objEmpresaShow = (Empresa) objEmpresaModel.buscar_por_id(objVacanteCompara.getId_empresa());
+
+
+
+            if (objCoderCompara.getCv().equals(objVacanteCompara.getTecnologia())){
+                opcion = 1;
+            }else{
+                JOptionPane.showMessageDialog(null,"La tecnologia del coder y la vacante no coinciden");
+            }
+        }
 
         // definimos un objeto tipo vacante
         Contratacion objContrato = new Contratacion();
@@ -66,7 +98,12 @@ public class ContratoController {
         // guardamos el objeto vacante en el modelo
         objContrato = (Contratacion) objContratoModel.insert(objContrato);
 
-        JOptionPane.showMessageDialog(null,objContrato.toString());
+        // instanciamos vacante
+        VacanteModel ObjVacanteModel = new VacanteModel();
+        Vacante objetoVacante = (Vacante) ObjVacanteModel.buscar_por_id(objContrato.getVacante_id_fk());
+        objContratoModel.updateActivo(objetoVacante);
+
+        JOptionPane.showMessageDialog(null, "titulo vacante: " + objVacanteCompara.getTitulo() +"\n" + "Descripcion: " + objVacanteCompara.getDescripcion() + "\n" + "Empresa: " + objEmpresaShow.getNombre() + "\n" + "ubicacion: " + objEmpresaShow.getSector() + "\n" + "Coder: " + objCoderCompara.getNombre() + " " + objCoderCompara.getApellido() + "\n" + "documento: " + objCoderCompara.getDocumento() + "\n" + "tecnologia: " + objCoderCompara.getCv() + "\n" + "salario: " + objContrato.getSalario());
     }
 
     public static void delete(){

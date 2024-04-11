@@ -30,7 +30,7 @@ public class ContratoModel implements CRUD {
             PreparedStatement objPrepare = objConnection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
             // Se le asigna valores a los ???
-            objPrepare.setString(1,objContrato.getEstado());
+            objPrepare.setString(1,"ACTIVO");
             objPrepare.setDouble(2,objContrato.getSalario());
             objPrepare.setInt(3,objContrato.getCoder_id_fk());
             objPrepare.setInt(4,objContrato.getVacante_id_fk());
@@ -202,7 +202,7 @@ public class ContratoModel implements CRUD {
         // try catch para ejecutar la sentencia SQL
         try{
             // buscamos por id
-            String sql ="SELECT * FROM contratacion WHERE id_contrato = ?;";
+            String sql ="SELECT * FROM contratacion WHERE id_contratacion = ?;";
 
             // preparamos el tatement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
@@ -234,5 +234,46 @@ public class ContratoModel implements CRUD {
 
     }
 
+    public boolean updateActivo(Object obj) {
+        // Se abre conexion
+        Connection objConnection = DBcontrato.openConnection();
+
+        // Se define el tipo de objeto a retornar
+        Vacante objContrato = (Vacante) obj;
+
+        // se define un booleano para confirmar la actualizacion
+        boolean isUpdated= false;
+
+        // Se abre try catch para actualizar los datos
+        try{
+            // se ingresa la sentenci SQL con todos los atributos y la coincidencia del ID
+            String slq = "UPDATE vacante SET estado = ? WHERE id_vacante = ?;";
+
+            // Se prepara el statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(slq);
+
+            // Se asigna valor a los interrogantes incluynedo el id
+            objPrepare.setString(1,"INACTIVO");
+
+            objPrepare.setInt(2,objContrato.getId_vacante());
+
+            // se define y se cuentan las lineas afectadas
+            int totalRowAffec = objPrepare.executeUpdate();
+            if (totalRowAffec>0){
+                isUpdated =true;
+                // Se imprime un mensaje confirmando la actualizacion
+                JOptionPane.showMessageDialog(null, "Actualizacion exitosa");
+            }
+            // Se imprime un mensaje en caso de se salir error
+        }catch (Exception error){
+            JOptionPane.showMessageDialog(null, "ERROR Upddte: " + error.getMessage());
+        }
+
+        // Se cierra la conexion
+        DBcontrato.closeConnection();
+
+        // Se retorna la confirmacion de la actualizacion
+        return isUpdated;
+    }
 
 }

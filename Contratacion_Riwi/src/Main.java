@@ -20,7 +20,7 @@ public class Main {
         // controlador de reserva
         ContratoController objContratoocntroller = new ContratoController();
 
-        // controlador de reserva
+        // controlador de empresa
         EmpresaController objEmpresa = new EmpresaController();
 
 
@@ -46,7 +46,7 @@ public class Main {
                     break;
                 case "4":
                     objEmpresa.getAll();
-
+                    break;
                 case "5":
                     JOptionPane.showMessageDialog(null,"Saliendo del menu...");
                     JOptionPane.showMessageDialog(null, """
