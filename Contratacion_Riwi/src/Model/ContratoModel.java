@@ -26,7 +26,7 @@ public class ContratoModel implements CRUD {
         // try catch para introducir la sentencia SQL
         try {
             // Sentencia SQL
-            String sql ="INSERT INTO contratacion (estado,salario,coder_id_fk,vacante_id_kf) VALUES (?,?,?,?);";
+            String sql ="INSERT INTO contratacion (estado,salario,coder_id_fk,vacante_id_fk) VALUES (?,?,?,?);";
             PreparedStatement objPrepare = objConnection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
             // Se le asigna valores a los ???
@@ -233,4 +233,6 @@ public class ContratoModel implements CRUD {
         return objContratacion;
 
     }
+
+
 }

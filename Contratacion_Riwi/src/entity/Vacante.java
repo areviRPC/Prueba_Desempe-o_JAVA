@@ -112,4 +112,11 @@ public class Vacante {
                 ", tecnologia='" + tecnologia + '\'' +
                 '}';
     }
+
+    public String toStringAlter() {
+        return "Vacante{" +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
+    }
 }

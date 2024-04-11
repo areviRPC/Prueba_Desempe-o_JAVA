@@ -122,7 +122,7 @@ public class CoderModel implements CRUD {
         // Se abre try catch para actualizar los datos
         try{
             // se ingresa la sentenci SQL con todos los atributos y la coincidencia del ID
-            String slq = "UPDATE coder SET nombre = ?, apellido = ?, documento = ?, cohorte = ? , cv = ? , clan = ? WHERE id_coder = ?;";
+            String slq = "UPDATE coder SET nombre = ?, apellidos = ?, documento = ?, cohorte = ? , cv = ? , clan = ? WHERE id_coder = ?;";
 
             // Se prepara el statement
             PreparedStatement objPrepare = objConnection.prepareStatement(slq);
@@ -239,8 +239,8 @@ public class CoderModel implements CRUD {
 
     }
 
-    // buscar por nombre
-    public List<Coder> Buscar_nombre(String nombre) {
+    // buscar por numero de cohorte
+    public List<Coder> Buscar_cohorte(int cohorte) {
 
         Connection objConnection = DBcontrato.openConnection();
 
@@ -250,15 +250,18 @@ public class CoderModel implements CRUD {
 
         try {
 
-            String sql = "SELECT * FROM coder WHERE nombre like ?;";
+            String sql = "SELECT * FROM coder WHERE cohorte like ?;";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
-            objPrepare.setString(1,"%"+nombre+"%");
+            objPrepare.setString(1,"%"+cohorte+"%");
 
             ResultSet objResult = objPrepare.executeQuery();
 
             while (objResult.next()){
+
+                objCoder = new Coder();
+
                 objCoder.setId_coder(objResult.getInt("id_coder"));
                 objCoder.setNombre(objResult.getString("nombre"));
                 objCoder.setApellido(objResult.getString("apellidos"));
@@ -267,7 +270,88 @@ public class CoderModel implements CRUD {
                 objCoder.setCv(objResult.getString("cv"));
                 objCoder.setClan(objResult.getString("clan"));
 
+                listaCoders.add(objCoder);
+            }
+
+
+        }catch (SQLException error){
+            JOptionPane.showMessageDialog(null,"ERROR"+error.getMessage());
+        }
+        DBcontrato.closeConnection();
+        return listaCoders;
+    }
+
+    // buscar por clan
+    public List<Coder> Buscar_clan(String clan) {
+
+        Connection objConnection = DBcontrato.openConnection();
+
+        Coder objCoder = null;
+
+        List<Coder> listaCoders = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM coder WHERE clan like ?;";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setString(1,"%"+clan+"%");
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while (objResult.next()){
+
                 objCoder = new Coder();
+
+                objCoder.setId_coder(objResult.getInt("id_coder"));
+                objCoder.setNombre(objResult.getString("nombre"));
+                objCoder.setApellido(objResult.getString("apellidos"));
+                objCoder.setDocumento(objResult.getString("documento"));
+                objCoder.setCohorte(objResult.getInt("cohorte"));
+                objCoder.setCv(objResult.getString("cv"));
+                objCoder.setClan(objResult.getString("clan"));
+
+                listaCoders.add(objCoder);
+            }
+
+
+        }catch (SQLException error){
+            JOptionPane.showMessageDialog(null,"ERROR"+error.getMessage());
+        }
+        DBcontrato.closeConnection();
+        return listaCoders;
+    }
+
+    public List<Coder> Buscar_tecno(String tecno) {
+
+        Connection objConnection = DBcontrato.openConnection();
+
+        Coder objCoder = null;
+
+        List<Coder> listaCoders = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM coder WHERE cv like ?;";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setString(1,"%"+tecno+"%");
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while (objResult.next()){
+
+                objCoder = new Coder();
+
+                objCoder.setId_coder(objResult.getInt("id_coder"));
+                objCoder.setNombre(objResult.getString("nombre"));
+                objCoder.setApellido(objResult.getString("apellidos"));
+                objCoder.setDocumento(objResult.getString("documento"));
+                objCoder.setCohorte(objResult.getInt("cohorte"));
+                objCoder.setCv(objResult.getString("cv"));
+                objCoder.setClan(objResult.getString("clan"));
 
                 listaCoders.add(objCoder);
             }

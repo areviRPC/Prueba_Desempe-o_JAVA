@@ -140,18 +140,70 @@ public class CoderController {
 
     }
 
-    public static void buscar_nombre(){
+    public static void buscar_corte(){
         // se abre conexion
         Connection objConnection = DBcontrato.openConnection();
         // se define el objeto a buscar
         CoderModel objCoderModel = new CoderModel();
 
         // ingreso de datos abuscar
-        String nombreBuscar = JOptionPane.showInputDialog("Ingresa el nombre que deseas buscar");
+        int corteBuscar = Integer.parseInt(JOptionPane.showInputDialog("Ingresa el numero de cohorte que deseas buscar"));
         String Result = "Resultados de la busqueda \n";
 
         // se define la lista en el que se van a guardar los resultados
-        List<Coder> listaCoder = objCoderModel.Buscar_nombre(nombreBuscar);
+        List<Coder> listaCoder = objCoderModel.Buscar_cohorte(corteBuscar);
+
+        // se valida que si existan resultados
+        if(listaCoder.size() == 0){
+            JOptionPane.showMessageDialog(null,"No se encontraron resultados");
+        }else{
+            // se imprime el resultado completo
+            for (Coder count : listaCoder){
+                Result += count.toString()+"\n";
+            }
+            JOptionPane.showMessageDialog(null,Result);
+        }
+
+    }
+
+    public static void buscar_Clan(){
+        // se abre conexion
+        Connection objConnection = DBcontrato.openConnection();
+        // se define el objeto a buscar
+        CoderModel objCoderModel = new CoderModel();
+
+        // ingreso de datos abuscar
+        String clanBuscar = JOptionPane.showInputDialog("Ingresa el nombre del clan que quieres que deseas buscar");
+        String Result = "Resultados de la busqueda \n";
+
+        // se define la lista en el que se van a guardar los resultados
+        List<Coder> listaCoder = objCoderModel.Buscar_clan(clanBuscar);
+
+        // se valida que si existan resultados
+        if(listaCoder.size() == 0){
+            JOptionPane.showMessageDialog(null,"No se encontraron resultados");
+        }else{
+            // se imprime el resultado completo
+            for (Coder count : listaCoder){
+                Result += count.toString()+"\n";
+            }
+            JOptionPane.showMessageDialog(null,Result);
+        }
+
+    }
+
+    public static void buscar_cv(){
+        // se abre conexion
+        Connection objConnection = DBcontrato.openConnection();
+        // se define el objeto a buscar
+        CoderModel objCoderModel = new CoderModel();
+
+        // ingreso de datos abuscar
+        String cvBuscar = JOptionPane.showInputDialog("Ingresa el nombre de la tecnologia (cv) que  deseas buscar");
+        String Result = "Resultados de la busqueda \n";
+
+        // se define la lista en el que se van a guardar los resultados
+        List<Coder> listaCoder = objCoderModel.Buscar_tecno(cvBuscar);
 
         // se valida que si existan resultados
         if(listaCoder.size() == 0){
@@ -178,8 +230,10 @@ public class CoderController {
                                 2). Crear nuevo Coder.
                                 3). Actualizar datos de un Coder.
                                 4). Borrar un Coder.
-                                5). Buscar un coder por nombre
-                                6). Salir del menu de Coders
+                                5). Buscar un coder por numero de cohorte.
+                                6). Buscar un coder por clan.
+                                7). Buscar un coder por tecnologia (cv).
+                                8). Salir del menu de Coders.
     
                                 
                                :
@@ -198,13 +252,19 @@ public class CoderController {
                     delete();
                     break;
                 case "5":
-                    buscar_nombre();
+                    buscar_corte();
                     break;
                 case "6":
+                    buscar_Clan();
+                    break;
+                case "7":
+                    buscar_cv();
+                    break;
+                case "8":
                     JOptionPane.showMessageDialog(null,"has salido del menu");
                     break;
 
             }
-        }while (!aOption.equals("6"));
+        }while (!aOption.equals("8"));
     }
 }

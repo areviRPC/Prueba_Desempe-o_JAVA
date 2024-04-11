@@ -1,5 +1,6 @@
 import Controller.CoderController;
 import Controller.ContratoController;
+import Controller.EmpresaController;
 import Controller.VacanteController;
 import Model.VacanteModel;
 import entity.Vacante;
@@ -19,6 +20,9 @@ public class Main {
         // controlador de reserva
         ContratoController objContratoocntroller = new ContratoController();
 
+        // controlador de reserva
+        EmpresaController objEmpresa = new EmpresaController();
+
 
 
         String option = "";
@@ -28,9 +32,8 @@ public class Main {
                     1). Menu de Coders.
                     2). Menu de Vacantes.
                     3). Menu Contratos
-                    4). -
-                    5). Exit of the select
-                    Enter the table to select:
+                    4). Mostrar las empresas dispobibles
+                    5). Salir del menu
                     """);
             switch (option) {
                 case "1":
@@ -42,12 +45,12 @@ public class Main {
                     objContratoocntroller.MenuContrato();
                     break;
                 case "4":
-
+                    objEmpresa.getAll();
 
                 case "5":
                     JOptionPane.showMessageDialog(null,"Saliendo del menu...");
                     JOptionPane.showMessageDialog(null, """
-                            Menu Closed.
+                            Menu cerrado.
                             Good Bye...
                             """);
                     break;

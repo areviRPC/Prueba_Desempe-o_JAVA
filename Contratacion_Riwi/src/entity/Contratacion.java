@@ -95,4 +95,5 @@ public class Contratacion {
                 ", vacante_id_fk=" + vacante_id_fk +
                 '}';
     }
+
 }

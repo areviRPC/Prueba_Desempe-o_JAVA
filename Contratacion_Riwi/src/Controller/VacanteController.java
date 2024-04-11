@@ -1,6 +1,9 @@
 package Controller;
 
+import Model.EmpresaModel;
 import Model.VacanteModel;
+import database.DBcontrato;
+import entity.Empresa;
 import entity.Vacante;
 
 import javax.swing.*;
@@ -34,6 +37,18 @@ public class VacanteController {
         return  listaVacante;
     }
 
+    public static String getStringAlter(){
+        VacanteModel objVacanteModel = new VacanteModel();
+        String listaVacante = "lista de vacantes \n";
+
+        for (Object recorrido : objVacanteModel.findAll()){
+            Vacante objVacante = (Vacante) recorrido;
+            listaVacante += objVacante.toStringAlter()+"\n";
+        }
+        return  listaVacante;
+    }
+
+
     public static void create(){
         VacanteModel objVacanteModel = new VacanteModel();
 
@@ -46,7 +61,7 @@ public class VacanteController {
         String titulo = JOptionPane.showInputDialog(null,"ingrese el titulo de la vacante");
         String descripcion = JOptionPane.showInputDialog(null,"ingrese la descripcion de la vacante");
         String duracion = JOptionPane.showInputDialog(null,"ingrese la duracion de la vacante");
-        String estado = JOptionPane.showInputDialog(null,"ingrese el estado de la vacante (solo se acepta 'activo' e 'inactivo' ");
+        String estado = "ACTIVO";
         int empresa = Integer.parseInt( JOptionPane.showInputDialog(null, listaEmpresas + "Seleccione la empresa para asignar la vacante"));
         String tecnoloiga = JOptionPane.showInputDialog(null,"ingrese la tecnologia de la vacante");
 
@@ -129,6 +144,58 @@ public class VacanteController {
 
     }
 
+    public static void buscar_titulo(){
+        // se abre conexion
+        Connection objConnection = DBcontrato.openConnection();
+        // se define el objeto a buscar
+        VacanteModel objVacanteModel = new VacanteModel();
+
+        // ingreso de datos abuscar
+        String tituloBuscar = JOptionPane.showInputDialog("Ingresa el titulo que deseas buscar");
+        String Result = "Resultados de la busqueda \n";
+
+        // se define la lista en el que se van a guardar los resultados
+        List<Vacante> listaVacante = objVacanteModel.Buscar_titulo(tituloBuscar);
+
+        // se valida que si existan resultados
+        if(listaVacante.size() == 0){
+            JOptionPane.showMessageDialog(null,"No se encontraron resultados");
+        }else{
+            // se imprime el resultado completo
+            for (Vacante count : listaVacante){
+                Result += count.toString()+"\n";
+            }
+            JOptionPane.showMessageDialog(null,Result);
+        }
+
+    }
+
+    public static void buscar_tecno(){
+        // se abre conexion
+        Connection objConnection = DBcontrato.openConnection();
+        // se define el objeto a buscar
+        VacanteModel objVacanteModel = new VacanteModel();
+
+        // ingreso de datos abuscar
+        String tecnoBuscar = JOptionPane.showInputDialog("Ingresa la tecnologia que deseas buscar");
+        String Result = "Resultados de la busqueda \n";
+
+        // se define la lista en el que se van a guardar los resultados
+        List<Vacante> listaVacante = objVacanteModel.Buscar_tecnologia(tecnoBuscar);
+
+        // se valida que si existan resultados
+        if(listaVacante.size() == 0){
+            JOptionPane.showMessageDialog(null,"No se encontraron resultados");
+        }else{
+            // se imprime el resultado completo
+            for (Vacante count : listaVacante){
+                Result += count.toString()+"\n";
+            }
+            JOptionPane.showMessageDialog(null,Result);
+        }
+
+    }
+
 
     public void MenuVacante(){
 
@@ -142,8 +209,9 @@ public class VacanteController {
                                 2). Generar una nueva vacante.
                                 3). Actualizar datos de una vacante.
                                 4). Borrar una vacante.
-                                5). -
-                                6). Salir del menu de Vacantes
+                                5). Buscar por titulo
+                                6). Buscar por tecnologia
+                                7). Salir del menu de Vacantes
     
                                 
                                :
@@ -162,12 +230,16 @@ public class VacanteController {
                     delete();
                     break;
                 case "5":
+                    buscar_titulo();
                     break;
                 case "6":
+                    buscar_tecno();
+                    break;
+                case "7":
                     JOptionPane.showMessageDialog(null,"has salido del menu");
                     break;
 
             }
-        }while (!aOption.equals("6"));
+        }while (!aOption.equals("7"));
     }
 }

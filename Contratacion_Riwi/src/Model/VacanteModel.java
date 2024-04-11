@@ -3,6 +3,7 @@ package Model;
 import database.CRUD;
 import database.DBcontrato;
 import entity.Coder;
+import entity.Empresa;
 import entity.Vacante;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ public class VacanteModel implements CRUD {
             objPrepare.setString(1,objVacante.getTitulo());
             objPrepare.setString(2,objVacante.getDescripcion());
             objPrepare.setString(3,objVacante.getDuracion());
-            objPrepare.setString(4,objVacante.getEstado());
+            objPrepare.setString(4,"ACTIVO");
             objPrepare.setInt(5,objVacante.getId_empresa());
             objPrepare.setString(6,objVacante.getTecnologia());
 
@@ -89,8 +90,8 @@ public class VacanteModel implements CRUD {
                 objVacante.setDescripcion(objResult.getString("descripcion"));
                 objVacante.setDuracion(objResult.getString("duracion"));
                 objVacante.setEstado(objResult.getString("estado"));
-                objVacante.setId_empresa(objResult.getInt("id_empresa"));
-                objVacante.setTecnologia(objResult.getString("teconologia"));
+                objVacante.setId_empresa(objResult.getInt("empresa_id_fk"));
+                objVacante.setTecnologia(objResult.getString("tecnologia"));
 
                 // Se añaden los datos al objeto
                 listaVacantes.add(objVacante);
@@ -224,7 +225,7 @@ public class VacanteModel implements CRUD {
                 objVacante.setDescripcion(objResult.getString("descripcion"));
                 objVacante.setDuracion(objResult.getString("duracion"));
                 objVacante.setEstado(objResult.getString("estado"));
-                objVacante.setId_empresa(objResult.getInt("id_empresa"));
+                objVacante.setId_empresa(objResult.getInt("empresa_id_fk"));
                 objVacante.setTecnologia(objResult.getString("tecnologia"));
             }
 
@@ -240,7 +241,7 @@ public class VacanteModel implements CRUD {
     }
 
     // buscar por nombre
-    public List<Vacante> Buscar_nombre(String nombre) {
+    public List<Vacante> Buscar_titulo(String titulo) {
 
         Connection objConnection = DBcontrato.openConnection();
 
@@ -254,20 +255,22 @@ public class VacanteModel implements CRUD {
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
-            objPrepare.setString(1,"%"+nombre+"%");
+            objPrepare.setString(1,"%"+titulo+"%");
 
             ResultSet objResult = objPrepare.executeQuery();
 
             while (objResult.next()){
+
+                objVacante = new Vacante();
+
                 objVacante.setId_vacante(objResult.getInt("id_vacante"));
                 objVacante.setTitulo(objResult.getString("titulo"));
                 objVacante.setDescripcion(objResult.getString("descripcion"));
                 objVacante.setDuracion(objResult.getString("duracion"));
                 objVacante.setEstado(objResult.getString("estado"));
-                objVacante.setId_empresa(objResult.getInt("id_empresa"));
+                objVacante.setId_empresa(objResult.getInt("empresa_id_fk"));
                 objVacante.setTecnologia(objResult.getString("tecnologia"));
 
-                objVacante = new Vacante();
 
                 listaVacante.add(objVacante);
             }
@@ -279,4 +282,47 @@ public class VacanteModel implements CRUD {
         DBcontrato.closeConnection();
         return listaVacante;
     }
+
+    public List<Vacante> Buscar_tecnologia(String tecnologia) {
+
+        Connection objConnection = DBcontrato.openConnection();
+
+        Vacante objVacante = null;
+
+        List<Vacante> listaVacante = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM vacante WHERE tecnologia like ?;";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setString(1,"%"+tecnologia+"%");
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while (objResult.next()){
+
+                objVacante = new Vacante();
+
+                objVacante.setId_vacante(objResult.getInt("id_vacante"));
+                objVacante.setTitulo(objResult.getString("titulo"));
+                objVacante.setDescripcion(objResult.getString("descripcion"));
+                objVacante.setDuracion(objResult.getString("duracion"));
+                objVacante.setEstado(objResult.getString("estado"));
+                objVacante.setId_empresa(objResult.getInt("empresa_id_fk"));
+                objVacante.setTecnologia(objResult.getString("tecnologia"));
+
+
+                listaVacante.add(objVacante);
+            }
+
+
+        }catch (SQLException error){
+            JOptionPane.showMessageDialog(null,"ERROR"+error.getMessage());
+        }
+        DBcontrato.closeConnection();
+        return listaVacante;
+    }
+
 }

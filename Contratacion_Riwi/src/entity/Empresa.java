@@ -76,7 +76,6 @@ public class Empresa {
         return "empresa{" +
                 "id_empresa=" + id_empresa +
                 ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
                 ", sector='" + sector + '\'' +
                 ", contacto='" + contacto + '\'' +
                 '}';
